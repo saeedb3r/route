@@ -1,4 +1,20 @@
-<input class="form-control my-1" placeholder="New Post" type="text" />
+<form class="" [formGroup]="form" (ngSubmit)="createPost(form)">
+  <div class="form-group border rounded p-2 my-2">
+    <input
+    formControlName="postTitle"
+    class="form-control my-2"
+    placeholder="Post Title"
+    type="text"
+  /><input
+    formControlName="postBody"
+    class="form-control my-2"
+    placeholder="Post Body"
+    type="text"
+  />
+  <div class="alert alert-danger" *ngIf="postBody.valid">invalid input</div>
+  <button [disabled]="form.invalid" class="btn btn-primary my-2">Submit</button>
+  </div>
+</form>
 <div *ngFor="let post of posts">
   <ul class="list-group">
     <li class="list-group-item">

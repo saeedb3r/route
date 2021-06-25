@@ -7,7 +7,7 @@ import { FileNotFoundComponent } from './components/file-not-found/file-not-foun
 import { HomeComponent } from './components/home/home.component';
 import { GithubFollowersComponent } from './components/github-followers/github-followers.component';
 import { GithubProfileComponent } from './components/github-profile/github-profile.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PostsComponent } from './components/posts/posts.component';
 import { DataService } from './services/data.service';
 import { PostsService } from './services/posts.service';
@@ -22,7 +22,7 @@ import { GithubFollowersService } from './services/github-followers.service';
     GithubProfileComponent,
     PostsComponent,
   ],
-  imports: [BrowserModule, FormsModule, HttpClientModule],
+  imports: [BrowserModule, FormsModule, HttpClientModule, ReactiveFormsModule],
   providers: [DataService, PostsService, GithubFollowersService],
   bootstrap: [AppComponent],
 })
