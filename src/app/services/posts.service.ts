@@ -21,12 +21,16 @@ export class PostsService {
   create(post: Post) {
     return this.http
       .post(this.url, JSON.stringify(post), { observe: 'body' })
-      .pipe(map(data => data as Post));
+      .pipe(map((data) => data as Post));
   }
-  update(arg0: Post) {
-    throw new Error('Method not implemented.');
+  update(post: Post) {
+    return this.http
+      .put(this.url + '/' + post.id, JSON.stringify(post))
+      .pipe(catchError((error) => throwError(new Error())));
   }
-  delete(arg0: Post) {
-    throw new Error('Method not implemented.');
+  delete(post: Post) {
+    return this.http
+      .delete(this.url + '/' + post.id)
+      .pipe(catchError((error) => throwError(new Error())));
   }
 }

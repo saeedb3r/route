@@ -1,18 +1,44 @@
 <form class="" [formGroup]="form" (ngSubmit)="createPost(form)">
   <div class="form-group border rounded p-2 my-2">
     <input
-    formControlName="postTitle"
-    class="form-control my-2"
-    placeholder="Post Title"
-    type="text"
-  /><input
-    formControlName="postBody"
-    class="form-control my-2"
-    placeholder="Post Body"
-    type="text"
-  />
-  <div class="alert alert-danger" *ngIf="postBody.valid">invalid input</div>
-  <button [disabled]="form.invalid" class="btn btn-primary my-2">Submit</button>
+      #pt
+      formControlName="postTitle"
+      class="form-control my-2"
+      placeholder="Post Title"
+      type="text"
+    />
+    <div
+      class="alert alert-danger"
+      *ngIf="postTitle.invalid && postTitle.touched"
+    >
+      <p class="m-0" *ngIf="postTitle.errors.required">
+        Post title is required
+      </p>
+      <p class="m-0" *ngIf="postTitle.errors.minlength">
+        Post title should be minimum
+        {{ postTitle.errors.minlength.requiredLength }} characters
+      </p>
+    </div>
+    <input
+      formControlName="postBody"
+      class="form-control my-2"
+      placeholder="Post Body"
+      type="text"
+    />
+    <div
+      class="alert alert-danger"
+      *ngIf="postBody.invalid && postBody.touched"
+    >
+      <p class="m-0" *ngIf="postBody.errors.required">Post body is required</p>
+      <p class="m-0" *ngIf="postBody.errors.minlength">
+        Post body should be minimum
+        {{ postBody.errors.minlength.requiredLength }} characters
+      </p>
+    </div>
+    <button [disabled]="form.invalid" class="btn btn-primary my-2">
+      Submit
+    </button>
+    <!-- <p>{{ postTitle.errors | json }}</p> -->
   </div>
 </form>
 <div *ngFor="let post of posts">
@@ -20,8 +46,18 @@
     <li class="list-group-item">
       <h5>{{ post.title }}</h5>
       <p>{{ post.body }}</p>
-      <button class="btn btn-danger float-end btn-sm mx-1">Delete</button>
-      <button class="btn btn-primary float-end btn-sm">Update</button>
+      <button
+        class="btn btn-danger float-end btn-sm mx-1"
+        (click)="deletePost(post)"
+      >
+        Delete
+      </button>
+      <button
+        class="btn btn-primary float-end btn-sm"
+        (click)="updatePost(post)"
+      >
+        Update
+      </button>
     </li>
   </ul>
 </div>

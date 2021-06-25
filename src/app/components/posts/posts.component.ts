@@ -30,22 +30,23 @@ export class PostsComponent implements OnInit {
       ]),
     });
   }
-
-  get postBody() {
-    return this.form.get('postTitle');
-  }
-
-
   ngOnInit(): void {
     this.getPosts();
   }
+
+  public get postBody(): FormControl {
+    return this.form.get('postBody') as FormControl;
+  }
+  public get postTitle(): FormControl {
+    return this.form.get('postTitle') as FormControl;
+  }
+
   getPosts() {
     this.postService
       .getAll()
       .subscribe((posts: Post[]) => (this.posts = posts));
   }
   createPost(postForm: FormGroup) {
-
     let post: Post = {
       title: postForm.controls.postTitle.value,
       body: postForm.controls.postBody.value,
@@ -56,9 +57,17 @@ export class PostsComponent implements OnInit {
     });
   }
   updatePost(post: Post) {
-    this.postService.update(post);
+    this.postService
+      .update(post)
+      .subscribe((post: Post) => console.log(post.id));
   }
   deletePost(post: Post) {
-    this.postService.delete(post);
+    this.postService
+      .delete(post)
+      .subscribe((data) => this.deletePostFromView(post));
+  }
+
+  private deletePostFromView(post: Post): void {
+    this.posts.splice(this.posts.indexOf(post), 1);
   }
 }
