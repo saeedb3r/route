@@ -1,0 +1,11 @@
+<input class="form-control my-1" placeholder="New Post" type="text" />
+<div *ngFor="let post of posts">
+  <ul class="list-group">
+    <li class="list-group-item">
+      <h5>{{ post.title }}</h5>
+      <p>{{ post.body }}</p>
+      <button class="btn btn-danger float-end btn-sm mx-1">Delete</button>
+      <button class="btn btn-primary float-end btn-sm">Update</button>
+    </li>
+  </ul>
+</div>

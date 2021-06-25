@@ -4,7 +4,7 @@ import { Follower } from 'src/app/common/interface/github-follower.interface';
 import { GithubFollowersService } from 'src/app/services/github-followers.service';
 
 @Component({
-  selector: 'app-github-followers',
+  selector: 'github-followers',
   templateUrl: './github-followers.component.html',
   styleUrls: ['./github-followers.component.css'],
 })
@@ -18,7 +18,7 @@ export class GithubFollowersComponent implements OnInit {
   getAllFollower() {
     this.service.getAll().subscribe((followers: Follower[]) => {
       this.followers = followers;
-      followers.forEach((f) => console.log(f.followers_url));
+      // followers.forEach((f) => console.log(f.followers_url));
     });
   }
 }
