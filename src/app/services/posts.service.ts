@@ -29,8 +29,11 @@ export class PostsService {
       .pipe(catchError((error) => throwError(new Error())));
   }
   delete(post: Post) {
-    return this.http
-      .delete(this.url + '/' + post.id)
-      .pipe(catchError((error) => throwError(new Error())));
+    return (
+      this.http
+        .delete(this.url + '/' + post.id)
+        // .delete(this.url + '/' + '')  // intentional error
+        .pipe(catchError((error) => throwError(new Error())))
+    );
   }
 }
