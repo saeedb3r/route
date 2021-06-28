@@ -13,6 +13,8 @@ import { DataService } from './services/data.service';
 import { PostsService } from './services/posts.service';
 import { GithubFollowersService } from './services/github-followers.service';
 import { GlobalError } from './common/error/global.error';
+import { AppRoutingModule } from './app-routing.module';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 @NgModule({
   declarations: [
@@ -22,8 +24,15 @@ import { GlobalError } from './common/error/global.error';
     GithubFollowersComponent,
     GithubProfileComponent,
     PostsComponent,
+    NavbarComponent,
   ],
-  imports: [BrowserModule, FormsModule, HttpClientModule, ReactiveFormsModule],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    HttpClientModule,
+    ReactiveFormsModule,
+    AppRoutingModule,
+  ],
   providers: [
     DataService,
     PostsService,
