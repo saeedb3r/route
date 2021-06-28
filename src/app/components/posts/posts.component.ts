@@ -1,4 +1,3 @@
-import { formatCurrency } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
@@ -18,17 +17,25 @@ export class PostsComponent implements OnInit {
   posts: Post[];
   form: FormGroup;
 
-  constructor(private postService: PostsService) {
-    this.form = new FormGroup({
-      postTitle: new FormControl('', [
-        Validators.required,
-        Validators.minLength(5),
-      ]),
-      postBody: new FormControl('', [
-        Validators.required,
-        Validators.minLength(5),
-      ]),
+  constructor(private postService: PostsService, private fb: FormBuilder) {
+    this.form = fb.group({
+      postTitle: [
+        '',
+        { Validators: [Validators.required, Validators.minLength(5)] },
+      ],
+      postBody: ['', [Validators.required, Validators.minLength(5)]],
     });
+
+    // this.form = new FormGroup({
+    //   postTitle: new FormControl('', [
+    //     Validators.required,
+    //     Validators.minLength(5),
+    //   ]),
+    //   postBody: new FormControl('', [
+    //     Validators.required,
+    //     Validators.minLength(5),
+    //   ]),
+    // });
   }
   ngOnInit(): void {
     this.getPosts();
@@ -48,11 +55,14 @@ export class PostsComponent implements OnInit {
   }
   createPost(postForm: FormGroup) {
     let post: Post = {
-      title: postForm.controls.postTitle.value,
-      body: postForm.controls.postBody.value,
+      title: this.postTitle.value,
+      body: this.postBody.value,
     };
 
-    this.postService.create(post).subscribe((newPost) => {
+    this.postBody.reset();
+    this.postTitle.reset();
+
+    this.postService.create(post).subscribe((newPost: Post) => {
       this.posts.splice(0, 0, { ...post, id: newPost.id });
     });
   }

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -12,6 +12,7 @@ import { PostsComponent } from './components/posts/posts.component';
 import { DataService } from './services/data.service';
 import { PostsService } from './services/posts.service';
 import { GithubFollowersService } from './services/github-followers.service';
+import { GlobalError } from './common/error/global.error';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,12 @@ import { GithubFollowersService } from './services/github-followers.service';
     PostsComponent,
   ],
   imports: [BrowserModule, FormsModule, HttpClientModule, ReactiveFormsModule],
-  providers: [DataService, PostsService, GithubFollowersService],
+  providers: [
+    DataService,
+    PostsService,
+    GithubFollowersService,
+    { provide: ErrorHandler, useClass: GlobalError },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
