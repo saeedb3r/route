@@ -1,1 +1,9 @@
-<p>github-profile works!</p>
+<div class="media">
+  <!-- <img src="{{ user?.avatar_url }}" class="w-25 rounded-circle" /> -->
+
+  <img [src]="user?.avatar_url" class="w-25 rounded-3" />
+  <div class="media-body">
+    <h5 class="mt-0">{{ user?.login }}</h5>
+    Profile Load here {{ param }}
+  </div>
+</div>

@@ -37,7 +37,8 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     DataService,
     PostsService,
     GithubFollowersService,
-    { provide: ErrorHandler, useClass: GlobalError },
+    // { provide: ErrorHandler, useClass: GlobalError },
+
   ],
   bootstrap: [AppComponent],
 })
