@@ -9,7 +9,7 @@ import { PostsComponent } from './components/posts/posts.component';
 const routes: Route[] = [
   { path: '', component: HomeComponent },
   { path: 'posts', component: PostsComponent },
-  { path: 'github-followers/:id', component: GithubProfileComponent },
+  { path: 'github-followers/:userName/:id', component: GithubProfileComponent },
   { path: 'github-followers', component: GithubFollowersComponent },
   { path: '**', component: FileNotFoundComponent },
 ];
