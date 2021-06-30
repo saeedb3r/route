@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GithubFollowersService } from 'src/app/services/github-followers.service';
+import { GithubProfileService } from 'src/app/services/github-profile.service';
 interface Param {
   id: string;
+  user: string;
 }
 interface User {
   login?: string;
@@ -45,25 +47,23 @@ interface User {
   styleUrls: ['./github-profile.component.css'],
 })
 export class GithubProfileComponent implements OnInit {
-  param: string;
-  private _user: User;
+  param: Param;
+  user: User;
   constructor(
     private route: ActivatedRoute,
-    private service: GithubFollowersService
+    private service: GithubProfileService
   ) {}
 
   ngOnInit(): void {
-    this.route.params.subscribe((param: Param) => (this.param = param.id));
-    this.service
-      .get(this.param, 'https://api.github.com/user/')
-      .subscribe((user: User) => {
-        console.log(user);
-
-        this._user = user;
-      });
+    this.getProfile();
   }
 
-  public get user(): User {
-    return this._user;
+  getProfile() {
+    console.log(this.route.params);
+
+    this.route.params.subscribe((param: Param) => (this.param = param));
+    this.service.get(this.param.id).subscribe((user: User) => {
+      this.user = user;
+    });
   }
 }

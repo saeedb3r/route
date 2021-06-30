@@ -11,12 +11,12 @@ import { NotFoundError } from '../common/error/not-found.error';
 })
 export class DataService {
   // private resource: any[];
-  constructor(private http: HttpClient, private url: string) {}
+  constructor(private http: HttpClient, public url: string) {}
 
-  get(resource, url) {
-    console.log(url + resource);
+  get(resource) {
+    console.log(this.url + resource);
 
-    return this.http.get(url + resource).pipe(
+    return this.http.get(this.url + resource).pipe(
       map((data) => data),
       catchError(this.errorHandler)
     );
@@ -52,6 +52,7 @@ export class DataService {
   private errorHandler(error: HttpResponse<any>) {
     if (error.status === 400) return throwError(new BadRequestError());
     if (error.status === 404) return throwError(new NotFoundError());
-    return throwError(new AppError());
+    return throwError(new AppError(error));
   }
+ 
 }

@@ -1,9 +1,18 @@
-<div class="media">
+<div class="media mt-2 bg-light p-3">
   <!-- <img src="{{ user?.avatar_url }}" class="w-25 rounded-circle" /> -->
 
   <img [src]="user?.avatar_url" class="w-25 rounded-3" />
   <div class="media-body">
-    <h5 class="mt-0">{{ user?.login }}</h5>
-    Profile Load here {{ param }}
+    <h5 class="mt-0">Username: {{ user?.login }}</h5>
+    <P>Github url: <a [href]="user?.url">{{user?.url}}</a></P>
+    <p>Name: {{user?.name}}</p>
+    <p>location: {{user?.location}}</p>
+    <p>Email: {{user?.email}}</p>
+    <p>Followers: {{user?.followers}}</p>
+    <p>Following: {{user?.following}}</p>
+    <p>Member since: {{user?.created_at|date}}</p>
   </div>
+  <br>
+  <p>test url parameter: {{ param | json }}</p>
+
 </div>
