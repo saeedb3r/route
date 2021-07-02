@@ -6,10 +6,14 @@ import { GithubProfileComponent } from './components/github-profile/github-profi
 import { HomeComponent } from './components/home/home.component';
 import { PostsComponent } from './components/posts/posts.component';
 
+
 const routes: Route[] = [
   { path: '', component: HomeComponent },
   { path: 'posts', component: PostsComponent },
-  { path: 'github-followers/:userName/:id', component: GithubProfileComponent },
+  {
+    path: `github-followers/:username/:id`,
+    component: GithubProfileComponent,
+  },
   { path: 'github-followers', component: GithubFollowersComponent },
   { path: '**', component: FileNotFoundComponent },
 ];

@@ -1,11 +1,22 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { GithubFollowersService } from 'src/app/services/github-followers.service';
+import { ActivatedRoute, Router } from '@angular/router';
 import { GithubProfileService } from 'src/app/services/github-profile.service';
+import { combineLatest, observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 interface Param {
   id: string;
-  user: string;
+  username: string;
+  [key: string]: string;
 }
+
+type viewMode = 'card' | 'table';
+interface QueryParam {
+  page?: number;
+  view?: viewMode;
+  version?: number;
+}
+
+// type Param = {[key:string]:string}
 interface User {
   login?: string;
   id?: number;
@@ -48,7 +59,9 @@ interface User {
 })
 export class GithubProfileComponent implements OnInit {
   param: Param;
+  queryParam: QueryParam;
   user: User;
+
   constructor(
     private route: ActivatedRoute,
     private service: GithubProfileService
@@ -59,9 +72,24 @@ export class GithubProfileComponent implements OnInit {
   }
 
   getProfile() {
-    console.log(this.route.params);
+    combineLatest([this.route.paramMap, this.route.queryParamMap])
+      .pipe(
+        map((combined) => {
+          this.param = combined[0] as Param;
+          this.queryParam = combined[1] as QueryParam;
+        })
+      )
+      .subscribe((combined) => console.log(combined));
 
-    this.route.params.subscribe((param: Param) => (this.param = param));
+    combineLatest([this.route.params, this.route.queryParams]).subscribe(
+      (combined) => {
+        console.log(combined);
+
+        this.param = combined[0] as Param;
+        this.queryParam = combined[1] as QueryParam;
+      }
+    );
+
     this.service.get(this.param.id).subscribe((user: User) => {
       this.user = user;
     });

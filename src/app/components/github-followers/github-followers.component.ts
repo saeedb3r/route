@@ -1,5 +1,6 @@
 import { HttpResponse } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Follower } from 'src/app/common/interface/github-follower.interface';
 import { GithubFollowersService } from 'src/app/services/github-followers.service';
 
@@ -10,7 +11,10 @@ import { GithubFollowersService } from 'src/app/services/github-followers.servic
 })
 export class GithubFollowersComponent implements OnInit, OnDestroy {
   followers: Follower[];
-  constructor(private service: GithubFollowersService) {}
+  constructor(
+    private service: GithubFollowersService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
     this.getAllFollower();
@@ -21,7 +25,5 @@ export class GithubFollowersComponent implements OnInit, OnDestroy {
       // followers.forEach((f) => console.log(f.followers_url));
     });
   }
-  ngOnDestroy() {
-    
-  }
+  ngOnDestroy() {}
 }
