@@ -2,7 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GithubProfileService } from 'src/app/services/github-profile.service';
 import { combineLatest, observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
+import { UnavailableError } from 'src/app/common/error/unavailable.error';
+import { InternalServerError } from 'src/app/common/error/internal-server.error';
+import { AppError } from 'src/app/common/error/app.error';
 interface Param {
   id: string;
   username: string;
@@ -12,8 +15,8 @@ interface Param {
 type viewMode = 'card' | 'table';
 interface QueryParam {
   page?: number;
-  view?: viewMode;
-  version?: number;
+  viewMode?: viewMode;
+  version?: string;
 }
 
 // type Param = {[key:string]:string}
@@ -64,34 +67,40 @@ export class GithubProfileComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private service: GithubProfileService
+    private service: GithubProfileService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
     this.getProfile();
   }
-
+  navFollowersList() {
+    this.router.navigate(['github-followers']);
+  }
   getProfile() {
     combineLatest([this.route.paramMap, this.route.queryParamMap])
       .pipe(
-        map((combined) => {
-          this.param = combined[0] as Param;
-          this.queryParam = combined[1] as QueryParam;
+        switchMap((combined) => {
+          this.param = {
+            id: combined[0].get('id'),
+            username: combined[0].get('username'),
+          };
+          this.queryParam = {
+            page: +combined[1].get('page'),
+            viewMode: combined[1].get('viewMode') as viewMode,
+            version: combined[1].get('version'),
+          };
+          return this.service.get(this.param.id);
         })
       )
-      .subscribe((combined) => console.log(combined));
-
-    combineLatest([this.route.params, this.route.queryParams]).subscribe(
-      (combined) => {
-        console.log(combined);
-
-        this.param = combined[0] as Param;
-        this.queryParam = combined[1] as QueryParam;
-      }
-    );
-
-    this.service.get(this.param.id).subscribe((user: User) => {
-      this.user = user;
-    });
+      .subscribe(
+        (user: User) => (this.user = user),
+        (error:AppError) => {
+          if (error instanceof UnavailableError) alert('the API link broken');
+          else if (error instanceof InternalServerError)
+            alert('server is down');
+          else throw error;
+        }
+      );
   }
 }
